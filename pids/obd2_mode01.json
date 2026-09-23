@@ -1,0 +1,1167 @@
+{
+  "schema_version": 1,
+  "title": "OBD-II Modo 01 estándar (SAE J1979) relevante para diésel",
+  "vehicle": "Cualquier vehículo OBD-II; verificado contra Ford Ranger PX 3.2 TDCi con la máscara de soporte 01 00/20/40/60/80/A0 en tiempo de ejecución",
+  "notes": "La app consulta las máscaras de PIDs soportados antes de leer; un PID listado aquí no garantiza que la PCM lo responda.",
+  "pids": [
+    {
+      "id": "OBD.01.01.MIL",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "01",
+      "name_en": "MIL (check engine) on",
+      "name_es": "Testigo check engine encendido",
+      "category": "diagnostics",
+      "bytes": 4,
+      "formula": "bit(A,7)",
+      "unit": "bool",
+      "min": 0,
+      "max": 1,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 01 83 07 65 04",
+        "expect": 1
+      }
+    },
+    {
+      "id": "OBD.01.01.DTC_COUNT",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "01",
+      "name_en": "Number of emission DTCs",
+      "name_es": "Número de DTCs de emisiones",
+      "category": "diagnostics",
+      "bytes": 4,
+      "formula": "A-bit(A,7)*128",
+      "unit": "count",
+      "min": 0,
+      "max": 127,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 01 83 07 65 04",
+        "expect": 3
+      }
+    },
+    {
+      "id": "OBD.01.04",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "04",
+      "name_en": "Calculated engine load",
+      "name_es": "Carga calculada del motor",
+      "category": "engine",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 04 80",
+        "expect": 50.196078
+      }
+    },
+    {
+      "id": "OBD.01.05",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "05",
+      "name_en": "Engine coolant temperature",
+      "name_es": "Temperatura de refrigerante",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 05 7B",
+        "expect": 83
+      }
+    },
+    {
+      "id": "OBD.01.0B",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "0B",
+      "name_en": "Intake manifold absolute pressure",
+      "name_es": "Presión absoluta del múltiple (MAP)",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "kPa",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "En diésel con turbo esto es la presión de sobrealimentación absoluta; muchas ECUs saturan en 255 kPa, usa 01 87 si está soportado.",
+      "test": {
+        "response": "41 0B 96",
+        "expect": 150
+      }
+    },
+    {
+      "id": "OBD.01.0C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "0C",
+      "name_en": "Engine RPM",
+      "name_es": "RPM del motor",
+      "category": "engine",
+      "bytes": 2,
+      "formula": "(A*256+B)/4",
+      "unit": "rpm",
+      "min": 0,
+      "max": 16383.75,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 0C 0C 80",
+        "expect": 800
+      }
+    },
+    {
+      "id": "OBD.01.0D",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "0D",
+      "name_en": "Vehicle speed",
+      "name_es": "Velocidad del vehículo",
+      "category": "vehicle",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "km/h",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 0D 3C",
+        "expect": 60
+      }
+    },
+    {
+      "id": "OBD.01.0F",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "0F",
+      "name_en": "Intake air temperature",
+      "name_es": "Temperatura de aire de admisión",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 0F 46",
+        "expect": 30
+      }
+    },
+    {
+      "id": "OBD.01.10",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "10",
+      "name_en": "Mass air flow",
+      "name_es": "Flujo de masa de aire (MAF)",
+      "category": "air",
+      "bytes": 2,
+      "formula": "(A*256+B)/100",
+      "unit": "g/s",
+      "min": 0,
+      "max": 655.35,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 10 0F A0",
+        "expect": 40
+      }
+    },
+    {
+      "id": "OBD.01.11",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "11",
+      "name_en": "Throttle position",
+      "name_es": "Posición de mariposa",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "En el 3.2 TDCi la mariposa es de control de admisión/EGR, no de potencia.",
+      "test": {
+        "response": "41 11 FF",
+        "expect": 100
+      }
+    },
+    {
+      "id": "OBD.01.1F",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "1F",
+      "name_en": "Run time since engine start",
+      "name_es": "Tiempo desde arranque",
+      "category": "engine",
+      "bytes": 2,
+      "formula": "A*256+B",
+      "unit": "s",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 1F 01 2C",
+        "expect": 300
+      }
+    },
+    {
+      "id": "OBD.01.21",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "21",
+      "name_en": "Distance traveled with MIL on",
+      "name_es": "Distancia con testigo encendido",
+      "category": "diagnostics",
+      "bytes": 2,
+      "formula": "A*256+B",
+      "unit": "km",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 21 00 0A",
+        "expect": 10
+      }
+    },
+    {
+      "id": "OBD.01.23",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "23",
+      "name_en": "Fuel rail gauge pressure (diesel)",
+      "name_es": "Presión del riel común (manométrica)",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "(A*256+B)*10",
+      "unit": "kPa",
+      "min": 0,
+      "max": 655350,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "30000 kPa = 300 bar. En ralentí el common rail típico anda en 250-400 bar.",
+      "test": {
+        "response": "41 23 0B B8",
+        "expect": 30000
+      }
+    },
+    {
+      "id": "OBD.01.2C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "2C",
+      "name_en": "Commanded EGR",
+      "name_es": "EGR comandada",
+      "category": "egr",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 2C 33",
+        "expect": 20
+      }
+    },
+    {
+      "id": "OBD.01.2D",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "2D",
+      "name_en": "EGR error",
+      "name_es": "Error de EGR",
+      "category": "egr",
+      "bytes": 1,
+      "formula": "A*100/128-100",
+      "unit": "%",
+      "min": -100,
+      "max": 99.2,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 2D 80",
+        "expect": 0
+      }
+    },
+    {
+      "id": "OBD.01.2F",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "2F",
+      "name_en": "Fuel tank level",
+      "name_es": "Nivel de combustible",
+      "category": "vehicle",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 2F 80",
+        "expect": 50.196078
+      }
+    },
+    {
+      "id": "OBD.01.31",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "31",
+      "name_en": "Distance since codes cleared",
+      "name_es": "Distancia desde borrado de códigos",
+      "category": "diagnostics",
+      "bytes": 2,
+      "formula": "A*256+B",
+      "unit": "km",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 31 03 E8",
+        "expect": 1000
+      }
+    },
+    {
+      "id": "OBD.01.33",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "33",
+      "name_en": "Barometric pressure",
+      "name_es": "Presión barométrica",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "kPa",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 33 62",
+        "expect": 98
+      }
+    },
+    {
+      "id": "OBD.01.42",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "42",
+      "name_en": "Control module voltage",
+      "name_es": "Voltaje del módulo (batería)",
+      "category": "electrical",
+      "bytes": 2,
+      "formula": "(A*256+B)/1000",
+      "unit": "V",
+      "min": 0,
+      "max": 65.535,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 42 37 DC",
+        "expect": 14.3
+      }
+    },
+    {
+      "id": "OBD.01.43",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "43",
+      "name_en": "Absolute load value",
+      "name_es": "Carga absoluta",
+      "category": "engine",
+      "bytes": 2,
+      "formula": "(A*256+B)*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 25700,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 43 00 FF",
+        "expect": 100
+      }
+    },
+    {
+      "id": "OBD.01.45",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "45",
+      "name_en": "Relative throttle position",
+      "name_es": "Posición relativa de mariposa",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 45 00",
+        "expect": 0
+      }
+    },
+    {
+      "id": "OBD.01.46",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "46",
+      "name_en": "Ambient air temperature",
+      "name_es": "Temperatura ambiente",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 46 41",
+        "expect": 25
+      }
+    },
+    {
+      "id": "OBD.01.49",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "49",
+      "name_en": "Accelerator pedal position D",
+      "name_es": "Pedal del acelerador D",
+      "category": "driver",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 49 33",
+        "expect": 20
+      }
+    },
+    {
+      "id": "OBD.01.4A",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "4A",
+      "name_en": "Accelerator pedal position E",
+      "name_es": "Pedal del acelerador E",
+      "category": "driver",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 4A 1A",
+        "expect": 10.196078
+      }
+    },
+    {
+      "id": "OBD.01.4C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "4C",
+      "name_en": "Commanded throttle actuator",
+      "name_es": "Actuador de mariposa comandado",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 4C FF",
+        "expect": 100
+      }
+    },
+    {
+      "id": "OBD.01.59",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "59",
+      "name_en": "Fuel rail absolute pressure",
+      "name_es": "Presión absoluta del riel",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "(A*256+B)*10",
+      "unit": "kPa",
+      "min": 0,
+      "max": 655350,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 59 0F A0",
+        "expect": 40000
+      }
+    },
+    {
+      "id": "OBD.01.5C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "5C",
+      "name_en": "Engine oil temperature",
+      "name_es": "Temperatura de aceite de motor",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 210,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 5C 82",
+        "expect": 90
+      }
+    },
+    {
+      "id": "OBD.01.5D",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "5D",
+      "name_en": "Fuel injection timing",
+      "name_es": "Tiempo de inyección",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "(A*256+B)/128-210",
+      "unit": "°",
+      "min": -210,
+      "max": 301.992,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 5D 69 00",
+        "expect": 0
+      }
+    },
+    {
+      "id": "OBD.01.5E",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "5E",
+      "name_en": "Engine fuel rate",
+      "name_es": "Consumo instantáneo de combustible",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "(A*256+B)/20",
+      "unit": "L/h",
+      "min": 0,
+      "max": 3276.75,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 5E 00 3C",
+        "expect": 3
+      }
+    },
+    {
+      "id": "OBD.01.61",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "61",
+      "name_en": "Driver demand torque",
+      "name_es": "Par demandado por el conductor",
+      "category": "engine",
+      "bytes": 1,
+      "formula": "A-125",
+      "unit": "%",
+      "min": -125,
+      "max": 130,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 61 91",
+        "expect": 20
+      }
+    },
+    {
+      "id": "OBD.01.62",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "62",
+      "name_en": "Actual engine torque",
+      "name_es": "Par real del motor",
+      "category": "engine",
+      "bytes": 1,
+      "formula": "A-125",
+      "unit": "%",
+      "min": -125,
+      "max": 130,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 62 91",
+        "expect": 20
+      }
+    },
+    {
+      "id": "OBD.01.63",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "63",
+      "name_en": "Engine reference torque",
+      "name_es": "Par de referencia del motor",
+      "category": "engine",
+      "bytes": 2,
+      "formula": "A*256+B",
+      "unit": "Nm",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "El 3.2 TDCi del PX está homologado a 470 Nm.",
+      "test": {
+        "response": "41 63 01 D6",
+        "expect": 470
+      }
+    },
+    {
+      "id": "OBD.01.70.BOOST_CMD",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "70",
+      "name_en": "Commanded boost pressure A",
+      "name_es": "Presión de turbo comandada",
+      "category": "turbo",
+      "bytes": 10,
+      "formula": "(B*256+C)/32",
+      "unit": "kPa",
+      "min": 0,
+      "max": 2047.97,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "Byte A = bits de soporte; valores absolutos.",
+      "test": {
+        "response": "41 70 3F 0C 80 0B B8 00 00 00 00 00 00",
+        "expect": 100
+      }
+    },
+    {
+      "id": "OBD.01.70.BOOST_ACT",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "70",
+      "name_en": "Actual boost pressure A",
+      "name_es": "Presión de turbo real",
+      "category": "turbo",
+      "bytes": 10,
+      "formula": "(D*256+E)/32",
+      "unit": "kPa",
+      "min": 0,
+      "max": 2047.97,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 70 3F 0C 80 0B B8 00 00 00 00 00 00",
+        "expect": 93.75
+      }
+    },
+    {
+      "id": "OBD.01.71.VGT_CMD",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "71",
+      "name_en": "Commanded VGT position",
+      "name_es": "Posición de álabes VGT comandada",
+      "category": "turbo",
+      "bytes": 6,
+      "formula": "B*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 71 0F 80 7A 00 00 00",
+        "expect": 50.196078
+      }
+    },
+    {
+      "id": "OBD.01.71.VGT_ACT",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "71",
+      "name_en": "Actual VGT position",
+      "name_es": "Posición de álabes VGT real",
+      "category": "turbo",
+      "bytes": 6,
+      "formula": "C*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 71 0F 80 7A 00 00 00",
+        "expect": 47.843137
+      }
+    },
+    {
+      "id": "OBD.01.73",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "73",
+      "name_en": "Exhaust pressure bank 1",
+      "name_es": "Presión de escape banco 1",
+      "category": "exhaust",
+      "bytes": 5,
+      "formula": "(B*256+C)/100",
+      "unit": "kPa",
+      "min": 0,
+      "max": 655.35,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 73 01 27 10 00 00",
+        "expect": 100
+      }
+    },
+    {
+      "id": "OBD.01.78.EGT11",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "78",
+      "name_en": "Exhaust gas temperature B1S1",
+      "name_es": "Temperatura de escape B1S1 (EGT)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "(B*256+C)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "B1S1 suele ser antes del catalizador/DOC.",
+      "test": {
+        "response": "41 78 0F 0F A0 00 00 00 00 00 00",
+        "expect": 360
+      }
+    },
+    {
+      "id": "OBD.01.78.EGT12",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "78",
+      "name_en": "Exhaust gas temperature B1S2",
+      "name_es": "Temperatura de escape B1S2 (EGT)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "(D*256+E)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 78 0F 0F A0 12 C0 00 00 00 00",
+        "expect": 440
+      }
+    },
+    {
+      "id": "OBD.01.78.EGT13",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "78",
+      "name_en": "Exhaust gas temperature B1S3",
+      "name_es": "Temperatura de escape B1S3 (EGT)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "(F*256+G)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 78 0F 00 00 00 00 11 F8 00 00",
+        "expect": 420
+      }
+    },
+    {
+      "id": "OBD.01.7A.DP",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "7A",
+      "name_en": "DPF differential pressure bank 1",
+      "name_es": "Presión diferencial del DPF",
+      "category": "dpf",
+      "bytes": 7,
+      "formula": "s16(B,C)/100",
+      "unit": "kPa",
+      "min": -327.68,
+      "max": 327.67,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "Delta de presión alto con flujo de aire bajo = DPF cargado.",
+      "test": {
+        "response": "41 7A 07 01 F4 00 00 00 00",
+        "expect": 5
+      }
+    },
+    {
+      "id": "OBD.01.7C.IN",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "7C",
+      "name_en": "DPF inlet temperature bank 1",
+      "name_es": "Temperatura de entrada del DPF",
+      "category": "dpf",
+      "bytes": 9,
+      "formula": "(B*256+C)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "Durante una regeneración activa sube a ~550-650 °C.",
+      "test": {
+        "response": "41 7C 0F 16 44 00 00 00 00 00 00",
+        "expect": 530
+      }
+    },
+    {
+      "id": "OBD.01.7C.OUT",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "7C",
+      "name_en": "DPF outlet temperature bank 1",
+      "name_es": "Temperatura de salida del DPF",
+      "category": "dpf",
+      "bytes": 9,
+      "formula": "(D*256+E)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 7C 0F 00 00 17 70 00 00 00 00",
+        "expect": 560
+      }
+    },
+    {
+      "id": "OBD.01.7F.TOTAL",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "7F",
+      "name_en": "Total engine run time",
+      "name_es": "Tiempo total de motor encendido",
+      "category": "engine",
+      "bytes": 13,
+      "formula": "u32(B,C,D,E)",
+      "unit": "s",
+      "min": 0,
+      "max": 4294967295,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 7F 07 00 36 EE 80 00 00 00 00 00 00 00 00",
+        "expect": 3600000
+      }
+    },
+    {
+      "id": "OBD.01.87.MAP_A",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "87",
+      "name_en": "Intake manifold absolute pressure A (hi-res)",
+      "name_es": "Presión absoluta del múltiple A (alta resolución)",
+      "category": "air",
+      "bytes": 5,
+      "formula": "(B*256+C)/32",
+      "unit": "kPa",
+      "min": 0,
+      "max": 2047.97,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "test": {
+        "response": "41 87 01 11 00 00 00",
+        "expect": 136
+      }
+    },
+    {
+      "id": "OBD.01.A6",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "01",
+      "pid": "A6",
+      "name_en": "Odometer",
+      "name_es": "Odómetro",
+      "category": "vehicle",
+      "bytes": 4,
+      "formula": "u32(A,B,C,D)/10",
+      "unit": "km",
+      "min": 0,
+      "max": 429496729.5,
+      "signed": false,
+      "confidence": "sae-standard",
+      "sources": [
+        "SAE J1979 / ISO 15031-5 (https://en.wikipedia.org/wiki/OBD-II_PIDs)"
+      ],
+      "notes": "Sólo ECUs con J1979 2019+; el PX temprano probablemente no lo soporta.",
+      "test": {
+        "response": "41 A6 00 1E 84 80",
+        "expect": 200000
+      }
+    }
+  ]
+}
