@@ -1,0 +1,35 @@
+name: RangerLink
+options:
+  bundleIdPrefix: com.rangerlink
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+packages:
+  OBDCore:
+    path: OBDCore
+targets:
+  RangerLink:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/RangerLink
+      - path: ../pids
+        type: folder
+        buildPhase: resources
+    dependencies:
+      - package: OBDCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.rangerlink.app
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: RangerLink
+        INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription: "RangerLink usa Bluetooth para hablar con el adaptador OBD-II ELM327 de tu camioneta."
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "RangerLink se conecta a adaptadores OBD-II Wi-Fi en la red local."
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        CODE_SIGN_STYLE: Automatic
+        # Pon aquí tu Team ID de Apple para instalar en el iPhone.
+        DEVELOPMENT_TEAM: ""

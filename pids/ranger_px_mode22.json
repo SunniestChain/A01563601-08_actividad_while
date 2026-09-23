@@ -1,0 +1,1248 @@
+{
+  "schema_version": 1,
+  "title": "Ford Ranger PX/PX2/PX3 3.2 TDCi — DIDs Ford UDS servicio 22 (comunidad)",
+  "vehicle": "Ford Ranger PX 2012-2022, 3.2 Duratorq TDCi (P5AT/SA2W), PCM Continental SID208 (PX) / SID209 (PX2/PX3 200 hp), 6R80/MT82",
+  "notes": "NO es la base de FORScan (propietaria y cifrada). Recopilado de logs OBDb, Ranger Mods y X-Gauge de ScanGauge para el Transit 3.2 (mismo motor). Todo lo que no es confirmed-ranger debe validarse en la camioneta antes de sacar conclusiones.",
+  "pids": [
+    {
+      "id": "PCM.22.F45C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F45C",
+      "name_en": "Engine oil temperature",
+      "name_es": "Temperatura de aceite de motor",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2014/commands",
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2018/commands",
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "Responde en logs OBDb 2014/2018 (p. ej. 62 F4 5C 28).",
+      "test": {
+        "response": "62 F4 5C 28",
+        "expect": 0
+      }
+    },
+    {
+      "id": "PCM.22.F42F",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F42F",
+      "name_en": "Fuel level",
+      "name_es": "Nivel de combustible",
+      "category": "vehicle",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2014/commands"
+      ],
+      "notes": "Responde en 2012, 2013, 2014 y 2018.",
+      "test": {
+        "response": "62 F4 2F FF",
+        "expect": 100
+      }
+    },
+    {
+      "id": "PCM.22.F45E",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F45E",
+      "name_en": "Engine fuel rate",
+      "name_es": "Consumo instantáneo de combustible",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "(A*256+B)/20",
+      "unit": "L/h",
+      "min": 0,
+      "max": 3276.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "Calculadora de Ranger Mods lo lista para 2.0 y 3.2 con cabecera 7E0.",
+      "test": {
+        "response": "62 F4 5E 00 3C",
+        "expect": 3
+      }
+    },
+    {
+      "id": "PCM.22.1310",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "1310",
+      "name_en": "Engine oil temperature (alternate, raw)",
+      "name_es": "Temperatura de aceite alternativa (cruda)",
+      "category": "temperatures",
+      "bytes": 2,
+      "formula": "u16(A,B)",
+      "unit": "raw",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2014/commands"
+      ],
+      "notes": "El PX 2012-2014 responde 2 bytes (12C0, 1900, 21FC, 2EE0 en un arranque en frío). Escala sin confirmar: candidatos /256 o /64 °C. Compárala contra F45C. No respondió en 2018."
+    },
+    {
+      "id": "PCM.22.057B",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "057B",
+      "name_en": "DPF soot load",
+      "name_es": "Carga de hollín del DPF",
+      "category": "dpf",
+      "bytes": 2,
+      "formula": "B",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "MY17+/Everest con DPF. Fórmula de Torque según Ranger Mods; un post sugiere (A*256+B)/10 en gramos. Verifica cuál tiene sentido (baja en carretera).",
+      "test": {
+        "response": "62 05 7B 00 27",
+        "expect": 39
+      }
+    },
+    {
+      "id": "PCM.22.0579",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "0579",
+      "name_en": "DPF load",
+      "name_es": "Carga del DPF",
+      "category": "dpf",
+      "bytes": 2,
+      "formula": "A*256+B",
+      "unit": "%",
+      "min": 0,
+      "max": null,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "Según Ranger Mods la regeneración arranca cerca de 80%. Sin post completo."
+    },
+    {
+      "id": "PCM.22.060E",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "060E",
+      "name_en": "Active engine operating mode (DPF regen state)",
+      "name_es": "Modo de operación del motor (estado de regeneración)",
+      "category": "dpf",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "enum",
+      "min": 0,
+      "max": 9,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "0 normal, 1 calentamiento regen DPF, 2 regen DPF, 3 FCLO, 4 quema lenta de hollín, 5 arranque, 6 arranque rápido, 7 LNT DeNOx, 8 SCR DeNOx, 9 regen solicitada por operador.",
+      "test": {
+        "response": "62 06 0E 02",
+        "expect": 2
+      }
+    },
+    {
+      "id": "PCM.22.03F6",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "03F6",
+      "name_en": "Exhaust gas temperature (manifold, EGT13)",
+      "name_es": "Temperatura de escape en el múltiple (EGT13)",
+      "category": "exhaust",
+      "bytes": 1,
+      "formula": "A*5",
+      "unit": "°C",
+      "min": 0,
+      "max": 1275,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "ScanGauge TXD 07E02203F6 RXD 3008 MTH x5. Unidad °C inferida. 03F4/03F5 son EGT11/12 con otra escala (ver candidatos).",
+      "test": {
+        "response": "62 03 F6 50",
+        "expect": 400
+      }
+    },
+    {
+      "id": "TCM.22.1E1C",
+      "module": "TCM",
+      "tx": "7E1",
+      "rx": "7E9",
+      "service": "22",
+      "pid": "1E1C",
+      "name_en": "Transmission fluid temperature",
+      "name_es": "Temperatura del aceite de transmisión",
+      "category": "transmission",
+      "bytes": 2,
+      "formula": "s16(A,B)/16",
+      "unit": "°C",
+      "min": -40,
+      "max": 150,
+      "signed": true,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2014/commands",
+        "https://raw.githubusercontent.com/cheeseprince/obd-gauge-cluster/main/docs/FORD-STATUS.md"
+      ],
+      "notes": "El TCM del PX responde en 7E9 (62 1E 1C 05 00 = 80 °C). Ranger Mods (Everest) da ((A*256)+B)*5/72-17, difiere ~8 °C; se prefiere /16.",
+      "test": {
+        "response": "62 1E 1C 05 00",
+        "expect": 80
+      }
+    },
+    {
+      "id": "TCM.22.1E12",
+      "module": "TCM",
+      "tx": "7E1",
+      "rx": "7E9",
+      "service": "22",
+      "pid": "1E12",
+      "name_en": "Commanded gear",
+      "name_es": "Marcha comandada",
+      "category": "transmission",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "marcha",
+      "min": 0,
+      "max": 6,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2014/commands",
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "Valores 1-6 observados en PX.",
+      "test": {
+        "response": "62 1E 12 03",
+        "expect": 3
+      }
+    },
+    {
+      "id": "TCM.22.1E1F",
+      "module": "TCM",
+      "tx": "7E1",
+      "rx": "7E9",
+      "service": "22",
+      "pid": "1E1F",
+      "name_en": "Gear engaged",
+      "name_es": "Marcha engranada",
+      "category": "transmission",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "marcha",
+      "min": 0,
+      "max": 6,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "Everest: 1E12 comandada, 1E1F engranada."
+    },
+    {
+      "id": "TCM.22.1E23",
+      "module": "TCM",
+      "tx": "7E1",
+      "rx": "7E9",
+      "service": "22",
+      "pid": "1E23",
+      "name_en": "Selector lever position (PRNDL)",
+      "name_es": "Posición de la palanca (PRNDL)",
+      "category": "transmission",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "enum",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/tree/main/tests/test_cases/2014/commands"
+      ],
+      "notes": "0x0A=M/S, 0x2E=D, 0x32=N, 0x3C=R, 0x46=P (observados en PX).",
+      "test": {
+        "response": "62 1E 23 46",
+        "expect": 70
+      }
+    },
+    {
+      "id": "TCM.22.1E14",
+      "module": "TCM",
+      "tx": "7E1",
+      "rx": "7E9",
+      "service": "22",
+      "pid": "1E14",
+      "name_en": "Torque converter slip (actual)",
+      "name_es": "Deslizamiento del convertidor (real)",
+      "category": "transmission",
+      "bytes": 2,
+      "formula": "(A*256+B)/4",
+      "unit": "rpm",
+      "min": 0,
+      "max": 16383.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "~30 detenido. Podría ser con signo: revisa en freno motor."
+    },
+    {
+      "id": "TCM.22.1E35",
+      "module": "TCM",
+      "tx": "7E1",
+      "rx": "7E9",
+      "service": "22",
+      "pid": "1E35",
+      "name_en": "Torque converter slip (desired)",
+      "name_es": "Deslizamiento del convertidor (deseado)",
+      "category": "transmission",
+      "bytes": 2,
+      "formula": "(A*256+B)/4",
+      "unit": "rpm",
+      "min": 0,
+      "max": 16383.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "~1020 detenido."
+    },
+    {
+      "id": "BCM.22.2813",
+      "module": "BCM",
+      "tx": "726",
+      "rx": "72E",
+      "service": "22",
+      "pid": "2813",
+      "name_en": "Tire pressure front left",
+      "name_es": "Presión de llanta delantera izquierda",
+      "category": "tires",
+      "bytes": 2,
+      "formula": "(A*256+B)/20",
+      "unit": "psi",
+      "min": 0,
+      "max": 3276.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2018/command_support.yaml"
+      ],
+      "notes": "Sólo PX2/PX3 con TPMS (respondió en 2018, no en 2012-2014).",
+      "test": {
+        "response": "62 28 13 02 80",
+        "expect": 32
+      }
+    },
+    {
+      "id": "BCM.22.2814",
+      "module": "BCM",
+      "tx": "726",
+      "rx": "72E",
+      "service": "22",
+      "pid": "2814",
+      "name_en": "Tire pressure front right",
+      "name_es": "Presión de llanta delantera derecha",
+      "category": "tires",
+      "bytes": 2,
+      "formula": "(A*256+B)/20",
+      "unit": "psi",
+      "min": 0,
+      "max": 3276.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2018/command_support.yaml"
+      ],
+      "notes": "Sólo PX2/PX3 con TPMS (respondió en 2018, no en 2012-2014).",
+      "test": {
+        "response": "62 28 14 02 80",
+        "expect": 32
+      }
+    },
+    {
+      "id": "BCM.22.2815",
+      "module": "BCM",
+      "tx": "726",
+      "rx": "72E",
+      "service": "22",
+      "pid": "2815",
+      "name_en": "Tire pressure rear right",
+      "name_es": "Presión de llanta trasera derecha",
+      "category": "tires",
+      "bytes": 2,
+      "formula": "(A*256+B)/20",
+      "unit": "psi",
+      "min": 0,
+      "max": 3276.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2018/command_support.yaml"
+      ],
+      "notes": "Sólo PX2/PX3 con TPMS (respondió en 2018, no en 2012-2014).",
+      "test": {
+        "response": "62 28 15 02 80",
+        "expect": 32
+      }
+    },
+    {
+      "id": "BCM.22.2816",
+      "module": "BCM",
+      "tx": "726",
+      "rx": "72E",
+      "service": "22",
+      "pid": "2816",
+      "name_en": "Tire pressure rear left",
+      "name_es": "Presión de llanta trasera izquierda",
+      "category": "tires",
+      "bytes": 2,
+      "formula": "(A*256+B)/20",
+      "unit": "psi",
+      "min": 0,
+      "max": 3276.75,
+      "signed": false,
+      "confidence": "confirmed-ranger",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2018/command_support.yaml"
+      ],
+      "notes": "Sólo PX2/PX3 con TPMS (respondió en 2018, no en 2012-2014).",
+      "test": {
+        "response": "62 28 16 02 80",
+        "expect": 32
+      }
+    },
+    {
+      "id": "PCM.22.6043",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "6043",
+      "name_en": "Fuel balancing rate cylinder 1",
+      "name_es": "Balance/corrección de inyección cilindro 1",
+      "category": "injectors",
+      "bytes": 2,
+      "formula": "s16(A,B)/2",
+      "unit": "mg/carrera?",
+      "min": null,
+      "max": null,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 Power Stroke (ScanGauge BR1). ScanGauge lo trata sin signo /2 y lo llama 'grams'; aquí se decodifica con signo porque las correcciones de balance suelen ser +/-. Unidad sin verificar. Compara los 5 cilindros entre sí en ralentí caliente estable.",
+      "test": {
+        "response": "62 60 43 00 04",
+        "expect": 2
+      }
+    },
+    {
+      "id": "PCM.22.6063",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "6063",
+      "name_en": "Fuel balancing rate cylinder 2",
+      "name_es": "Balance/corrección de inyección cilindro 2",
+      "category": "injectors",
+      "bytes": 2,
+      "formula": "s16(A,B)/2",
+      "unit": "mg/carrera?",
+      "min": null,
+      "max": null,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 Power Stroke (ScanGauge BR2). ScanGauge lo trata sin signo /2 y lo llama 'grams'; aquí se decodifica con signo porque las correcciones de balance suelen ser +/-. Unidad sin verificar. Compara los 5 cilindros entre sí en ralentí caliente estable."
+    },
+    {
+      "id": "PCM.22.6049",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "6049",
+      "name_en": "Fuel balancing rate cylinder 3",
+      "name_es": "Balance/corrección de inyección cilindro 3",
+      "category": "injectors",
+      "bytes": 2,
+      "formula": "s16(A,B)/2",
+      "unit": "mg/carrera?",
+      "min": null,
+      "max": null,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 Power Stroke (ScanGauge BR3). ScanGauge lo trata sin signo /2 y lo llama 'grams'; aquí se decodifica con signo porque las correcciones de balance suelen ser +/-. Unidad sin verificar. Compara los 5 cilindros entre sí en ralentí caliente estable."
+    },
+    {
+      "id": "PCM.22.6069",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "6069",
+      "name_en": "Fuel balancing rate cylinder 4",
+      "name_es": "Balance/corrección de inyección cilindro 4",
+      "category": "injectors",
+      "bytes": 2,
+      "formula": "s16(A,B)/2",
+      "unit": "mg/carrera?",
+      "min": null,
+      "max": null,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 Power Stroke (ScanGauge BR4). ScanGauge lo trata sin signo /2 y lo llama 'grams'; aquí se decodifica con signo porque las correcciones de balance suelen ser +/-. Unidad sin verificar. Compara los 5 cilindros entre sí en ralentí caliente estable."
+    },
+    {
+      "id": "PCM.22.3037",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "3037",
+      "name_en": "Fuel balancing rate cylinder 5",
+      "name_es": "Balance/corrección de inyección cilindro 5",
+      "category": "injectors",
+      "bytes": 2,
+      "formula": "s16(A,B)/2",
+      "unit": "mg/carrera?",
+      "min": null,
+      "max": null,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 Power Stroke (ScanGauge BR5). ScanGauge lo trata sin signo /2 y lo llama 'grams'; aquí se decodifica con signo porque las correcciones de balance suelen ser +/-. Unidad sin verificar. Compara los 5 cilindros entre sí en ralentí caliente estable. El DID no sigue el patrón de los cilindros 1-4; copiado tal cual de ScanGauge."
+    },
+    {
+      "id": "PCM.22.9DA2",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9DA2",
+      "name_en": "Fuel rail pressure actual (raw)",
+      "name_es": "Presión de riel real (cruda)",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "u16(A,B)",
+      "unit": "raw",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/xgauge/fuel-rail-pressure-1000s-of-psi-2/"
+      ],
+      "notes": "Transit 3.2. ScanGauge escala *145/1000 y lo etiqueta '1000s of PSI'; escala real sin verificar. Calíbrala contra OBD.01.23."
+    },
+    {
+      "id": "PCM.22.9DD4.S1",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9DD4",
+      "name_en": "EGT bank 1 sensor 1 (raw)",
+      "name_es": "EGT banco 1 sensor 1 (cruda)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "u16(B,C)",
+      "unit": "raw",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 (ScanGauge). A = bits de soporte. Hipótesis: mismo formato que J1979 01 78, es decir raw/10-40 °C."
+    },
+    {
+      "id": "PCM.22.9DD4.S2",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9DD4",
+      "name_en": "EGT bank 1 sensor 2 (raw)",
+      "name_es": "EGT banco 1 sensor 2 (cruda)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "u16(D,E)",
+      "unit": "raw",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 (ScanGauge). Posición de bytes inferida."
+    },
+    {
+      "id": "PCM.22.9DD4.S3",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9DD4",
+      "name_en": "EGT bank 1 sensor 3 (raw)",
+      "name_es": "EGT banco 1 sensor 3 (cruda)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "u16(F,G)",
+      "unit": "raw",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 (ScanGauge). ScanGauge RXD 2810 (frame consecutivo 1)."
+    },
+    {
+      "id": "PCM.22.9DD4.S4",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9DD4",
+      "name_en": "EGT bank 1 sensor 4 (raw)",
+      "name_es": "EGT banco 1 sensor 4 (cruda)",
+      "category": "exhaust",
+      "bytes": 9,
+      "formula": "u16(H,I)",
+      "unit": "raw",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Transit 3.2 (ScanGauge). ScanGauge RXD 3810."
+    },
+    {
+      "id": "PCM.22.9D63.REGEN",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9D63",
+      "name_en": "DPF regeneration active",
+      "name_es": "Regeneración de DPF activa",
+      "category": "dpf",
+      "bytes": 7,
+      "formula": "bit(B,0)",
+      "unit": "bool",
+      "min": 0,
+      "max": 1,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/xgauge/dpf-regen-status-onoff/"
+      ],
+      "notes": "Formato parecido a J1979 01 8B.",
+      "test": {
+        "response": "62 9D 63 00 01 80 00 00 00 00",
+        "expect": 1
+      }
+    },
+    {
+      "id": "PCM.22.9D63.SOOT",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9D63",
+      "name_en": "DPF soot load (normalized regen trigger)",
+      "name_es": "Carga de hollín normalizada (disparo de regen)",
+      "category": "dpf",
+      "bytes": 7,
+      "formula": "C*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/xgauge/dpf-soot-load/"
+      ],
+      "notes": "ScanGauge RXD 4808 MTH x100/255.",
+      "test": {
+        "response": "62 9D 63 00 01 80 00 00 00 00",
+        "expect": 50.196078
+      }
+    },
+    {
+      "id": "PCM.22.9D63.AVG_T",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9D63",
+      "name_en": "Average time between DPF regenerations",
+      "name_es": "Tiempo promedio entre regeneraciones",
+      "category": "dpf",
+      "bytes": 7,
+      "formula": "D*256+E",
+      "unit": "min",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/x-gauge-commands/3-2l-powerstroke/"
+      ],
+      "notes": "Posición de bytes inferida del layout de 01 8B."
+    },
+    {
+      "id": "PCM.22.9D63.AVG_KM",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "9D63",
+      "name_en": "Average distance between DPF regenerations",
+      "name_es": "Distancia promedio entre regeneraciones",
+      "category": "dpf",
+      "bytes": 7,
+      "formula": "F*256+G",
+      "unit": "km",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/xgauge/average-distance-between-dpf-regenerations-miles/"
+      ],
+      "notes": "ScanGauge convierte km→millas con x31/50, confirma que el crudo es km."
+    },
+    {
+      "id": "PCM.22.22B6",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "22B6",
+      "name_en": "Exhaust / DPF differential pressure",
+      "name_es": "Presión diferencial de escape/DPF",
+      "category": "dpf",
+      "bytes": 2,
+      "formula": "(A*256+B)*100/862",
+      "unit": "psi",
+      "min": 0,
+      "max": null,
+      "signed": false,
+      "confidence": "ford-diesel-sibling",
+      "sources": [
+        "https://www.scangauge.com/xgauge/exhaust-gas-differential-pressure-psi/"
+      ],
+      "notes": "ScanGauge MTH x100/862 psi. Compárala contra OBD.01.7A.DP si está soportado."
+    },
+    {
+      "id": "PCM.22.F48B",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F48B",
+      "name_en": "Average distance between DPF regens (J1979 mirror)",
+      "name_es": "Distancia promedio entre regeneraciones (espejo J1979)",
+      "category": "dpf",
+      "bytes": 7,
+      "formula": "F*256+G",
+      "unit": "km",
+      "min": 0,
+      "max": 65535,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ],
+      "notes": "Torque PID 22F48B módulo 7E0; no se confirmó en qué vehículo."
+    },
+    {
+      "id": "PCM.22.054B",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "054B",
+      "name_en": "Oil life remaining",
+      "name_es": "Vida restante del aceite",
+      "category": "engine",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Verificado en Focus y Ranger US 2021; desconocido en SID208/209."
+    },
+    {
+      "id": "PCM.22.F40C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F40C",
+      "name_en": "Engine speed",
+      "name_es": "RPM del motor",
+      "category": "engine",
+      "bytes": 2,
+      "formula": "(A*256+B)/4",
+      "unit": "rpm",
+      "min": 0,
+      "max": 16383.75,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo.",
+      "test": {
+        "response": "62 F4 0C 0C 80",
+        "expect": 800
+      }
+    },
+    {
+      "id": "PCM.22.F40D",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F40D",
+      "name_en": "Vehicle speed",
+      "name_es": "Velocidad del vehículo",
+      "category": "vehicle",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "km/h",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F405",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F405",
+      "name_en": "Engine coolant temperature",
+      "name_es": "Temperatura de refrigerante",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F40F",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F40F",
+      "name_en": "Intake air temperature",
+      "name_es": "Temperatura de aire de admisión",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F410",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F410",
+      "name_en": "Mass air flow",
+      "name_es": "Flujo de aire (MAF)",
+      "category": "air",
+      "bytes": 2,
+      "formula": "(A*256+B)/100",
+      "unit": "g/s",
+      "min": 0,
+      "max": 655.35,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F40B",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F40B",
+      "name_en": "Manifold absolute pressure (boost)",
+      "name_es": "Presión absoluta del múltiple (boost)",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "kPa",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F423",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F423",
+      "name_en": "Fuel rail pressure (gauge)",
+      "name_es": "Presión del riel común",
+      "category": "fuel",
+      "bytes": 2,
+      "formula": "(A*256+B)*10",
+      "unit": "kPa",
+      "min": 0,
+      "max": 655350,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo.",
+      "test": {
+        "response": "62 F4 23 0B B8",
+        "expect": 30000
+      }
+    },
+    {
+      "id": "PCM.22.F42C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F42C",
+      "name_en": "Commanded EGR",
+      "name_es": "EGR comandada",
+      "category": "egr",
+      "bytes": 1,
+      "formula": "A*100/255",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F42D",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F42D",
+      "name_en": "EGR error",
+      "name_es": "Error de EGR",
+      "category": "egr",
+      "bytes": 1,
+      "formula": "(A-128)*100/128",
+      "unit": "%",
+      "min": -100,
+      "max": 99.2,
+      "signed": true,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo.",
+      "test": {
+        "response": "62 F4 2D 80",
+        "expect": 0
+      }
+    },
+    {
+      "id": "PCM.22.F433",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F433",
+      "name_en": "Barometric pressure",
+      "name_es": "Presión barométrica",
+      "category": "air",
+      "bytes": 1,
+      "formula": "A",
+      "unit": "kPa",
+      "min": 0,
+      "max": 255,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F442",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F442",
+      "name_en": "Control module voltage",
+      "name_es": "Voltaje del módulo",
+      "category": "electrical",
+      "bytes": 2,
+      "formula": "(A*256+B)/1000",
+      "unit": "V",
+      "min": 0,
+      "max": 65.535,
+      "signed": false,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F446",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F446",
+      "name_en": "Ambient air temperature",
+      "name_es": "Temperatura ambiente",
+      "category": "temperatures",
+      "bytes": 1,
+      "formula": "A-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 215,
+      "signed": true,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F43C",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F43C",
+      "name_en": "Catalyst/DPF temperature B1S1",
+      "name_es": "Temperatura catalizador/DPF B1S1",
+      "category": "exhaust",
+      "bytes": 2,
+      "formula": "(A*256+B)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    },
+    {
+      "id": "PCM.22.F43E",
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "service": "22",
+      "pid": "F43E",
+      "name_en": "Catalyst/DPF temperature B1S2",
+      "name_es": "Temperatura catalizador/DPF B1S2",
+      "category": "exhaust",
+      "bytes": 2,
+      "formula": "(A*256+B)/10-40",
+      "unit": "°C",
+      "min": -40,
+      "max": 6513.5,
+      "signed": true,
+      "confidence": "ford-generic",
+      "sources": [
+        "https://github.com/OBDb/Ford-Ranger/blob/main/tests/test_cases/2014/command_support.yaml",
+        "https://github.com/OBDb/Ford-Focus/blob/main/signalsets/v3/default.json"
+      ],
+      "notes": "Espejo Ford 22 F4xx del PID 01 xx. La PCM del PX responde F42F/F45C/F45E; el resto verifícalo."
+    }
+  ],
+  "candidates": [
+    {
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "did": "03F4",
+      "name_es": "EGT sensor 11 (zona DPF)",
+      "notes": "Ranger Mods: EGT11/12/13 = 03F4/03F5/03F6; 'una usa otra matemática'. Fórmula desconocida.",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ]
+    },
+    {
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "did": "03F5",
+      "name_es": "EGT sensor 12 (zona DPF)",
+      "notes": "Posiblemente A*5 como 03F6.",
+      "sources": [
+        "Ranger Mods forum (saeb.net mirror)"
+      ]
+    },
+    {
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "did": "0A18",
+      "name_es": "Distancia desde la última regeneración",
+      "notes": "Transit 3.2, multi-frame (RXF C562860A3718). Layout sin capturar.",
+      "sources": [
+        "https://www.scangauge.com/xgauge/distance-since-last-dpf-regen-miles/"
+      ]
+    },
+    {
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "did": "0434",
+      "name_es": "Distancia desde la última regeneración completa",
+      "notes": "Lista 6.7 Power Stroke, baja confianza.",
+      "sources": [
+        "https://torque-bhp.com/community/main-forum/ford-6-7l-extended-pid-list/"
+      ]
+    },
+    {
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "did": "9DD6",
+      "name_es": "Presión de entrada del DPF",
+      "notes": "Transit 3.2, multi-frame; (D*256)+E cruda, escala desconocida.",
+      "sources": [
+        "https://www.scangauge.com/xgauge/diesel-particulate-filter-bank-1-inlet-pressure-psi/"
+      ]
+    },
+    {
+      "module": "PCM",
+      "tx": "7E0",
+      "rx": "7E8",
+      "did": "2840",
+      "name_es": "Hollín calculado en el aceite (g)",
+      "notes": "Transit 3.2, single frame; escala sin capturar.",
+      "sources": [
+        "https://www.scangauge.com/xgauge/calculated-soot-in-oil-grams/"
+      ]
+    }
+  ]
+}
